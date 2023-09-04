@@ -1,0 +1,111 @@
+*design* DebussyLib (btIdent Verdi_O-2018.09-SP2)
+Command arguments:
+    +define+verilog
+    -f filelist.f
+        ./src.v
+        ./tb.v
+
+
+*Error* illegal LHS in continuous assignment
+"./src.v", 146: 
+
+*Error* illegal LHS in continuous assignment
+"./src.v", 152: 
+
+*Error* Syntax error at i
+"./tb.v", 149: 
+
+*Error* Syntax error at <
+"./tb.v", 149: 
+
+*Error* Syntax error at )
+"./tb.v", 149: 
+
+*Error* Syntax error at =
+"./tb.v", 163: 
+
+*Error* Syntax error at =
+"./tb.v", 164: 
+
+*Error* Syntax error at =
+"./tb.v", 165: 
+
+*Error* Syntax error at #
+"./tb.v", 166: 
+
+*Error* Syntax error at $finish
+"./tb.v", 167: 
+
+*Error* Syntax error at end
+"./tb.v", 168: 
+
+*Error* missing end in for statement
+"./tb.v", 149: 
+
+*Error* missing initial in for statement
+"./tb.v", 149: 
+
+*Error* Syntax error at i
+"./tb.v", 218: 
+
+*Error* Syntax error at <
+"./tb.v", 218: 
+
+*Error* Syntax error at )
+"./tb.v", 218: 
+
+*Error* Syntax error at else
+"./tb.v", 223: 
+
+*Error* Syntax error at [
+"./tb.v", 224: 
+
+*Error* Syntax error at end
+"./tb.v", 225: 
+
+*Error* Syntax error at end
+"./tb.v", 226: 
+
+*Error* nonconstant index
+"./tb.v", 209: 
+
+*Error* missing end in for statement
+"./tb.v", 218: 
+
+*Error* missing initial in for statement
+"./tb.v", 218: 
+Highest level modules:
+reg_both_pip_unit_my
+testbench
+
+
+*Error* failed to find identifier i
+"./tb.v", 149: 
+
+*Error* failed to find identifier i
+"./tb.v", 149: 
+
+*Error* failed to find identifier i
+"./tb.v", 149: 
+
+*Error* failed to find identifier i
+"./tb.v", 151: 
+
+*Error* failed to find identifier i
+"./tb.v", 155: 
+
+*Error* failed to find identifier i
+"./tb.v", 159: 
+
+*Error* failed to find identifier i
+"./tb.v", 218: 
+
+*Error* failed to find identifier i
+"./tb.v", 218: 
+
+*Error* failed to find identifier i
+"./tb.v", 218: 
+
+*Error* failed to find identifier i
+"./tb.v", 219: 
+Total	33 error(s),   0 warning(s)

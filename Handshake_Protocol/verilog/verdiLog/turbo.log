@@ -1,0 +1,4 @@
+Command Line: /usr/eda/verdi/verdi/Verdi_O-2018.09-SP2/platform/LINUXAMD64/bin/Novas -nologo -f filelist.f -ssf testbench.fsdb
+uname(Linux hhj-pc 5.15.0-75-generic #82~20.04.1-Ubuntu SMP Wed Jun 7 19:37:37 UTC 2023 x86_64)
+au time 60175.206797 13.051389 12.291645 delta 496832512 496832512 total 872435712 872435712
+560
