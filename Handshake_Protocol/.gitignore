@@ -1,0 +1,12 @@
+**/*.so
+**/buildDir/
+**/sim*
+**/csrc/
+**/testbench.simv.daidir/
+**/verdiLog
+**/*.log
+**/*.conf
+**/*.fsdb
+**/*.simv
+**/*.key
+**/*.vpd
