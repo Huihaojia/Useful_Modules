@@ -96,21 +96,15 @@ module axi_stream_insert_header #(
 
     /*  Join Module */
     reg [DATA_WD-1 : 0] shift_left_in;
-    reg [DATA_WD-1 : 0] shift_left_out;
+    wire [DATA_WD-1 : 0] shift_left_out;
     reg [DATA_WD-1 : 0] shift_right_in;
-    reg [DATA_WD-1 : 0] shift_right_out;
+    wire [DATA_WD-1 : 0] shift_right_out;
 
     wire [DATA_BYTE_WD-1 : 0] shift_sel;
 
     assign shift_sel = working ? keep_insert_reg : keep_insert;
-
-    always @(*) begin
-        shift_left_out = shift_word_left(shift_left_in, shift_sel);
-    end
-
-    always @(*) begin
-        shift_right_out = shift_word_right(shift_right_in, shift_sel);
-    end
+    assign shift_left_out = shift_word_left(shift_left_in, shift_sel);
+    assign shift_right_out = shift_word_right(shift_right_in, shift_sel);
 
     reg [DATA_WD-1 : 0]data_valid;
     always @(*) begin
@@ -184,12 +178,6 @@ module axi_stream_insert_header #(
                 else begin
                     keep_out_reg <= keep_in;
                 end
-            end
-            else if (last_out_reg) begin
-                data_reg <= 0;
-                keep_out_reg <= 0;
-                last_reg <= 0;
-                keep_in_reg <= 0;
             end
         end
     end
