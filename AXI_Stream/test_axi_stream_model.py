@@ -151,7 +151,6 @@ class inputDriver(object):
             data_in = hex_div(hex(transaction.data_in)[2:], 2)
             keep_in = hex_div(transaction.keep_in, 1)
             
-            # print("$$", data_in)
             for i in range(len(keep_in)):
                 if(keep_in[i] == "1"):
                     self.aimResult.append(data_in[i])
@@ -211,10 +210,9 @@ class outputMonitor(object):
                 self.taskCounter += 1
                 cocotb.log.info("Get a transaction in Output Monitor")
                 
-                data_out = hex_div(hex(self.data_out.value)[2:].ljust(8, '0'), 2)
+                data_out = hex_div(hex(self.data_out.value)[2:].rjust(8, '0'), 2)
                 keep_out = hex_div(bin(self.keep_out.value)[2:], 1)
                 
-                # print("##", keep_out)
                 for i in range(len(keep_out)):
                     if(keep_out[i] == "1"):
                         self.recvQ.append(data_out[i])
@@ -229,7 +227,7 @@ class axiStreamTb(object):
         self.inDriver = inputDriver(dut.clk, dut.valid_in, dut.data_in, dut.keep_in, dut.last_in, dut.ready_out, dut.valid_insert, dut.header_insert, dut.keep_insert, dut.ready_in, dut.ready_insert)
         self.outputMonitor = outputMonitor(dut.clk, dut.valid_out, dut.ready_out, dut.data_out, dut.keep_out, dut.last_out)
         self.clockCtrl = clockDomain(self.dut.clk, 10, "ns", self.dut.rst_n, False)
-        
+    
     async def start(self):
         self.inDriverTh = cocotb.start_soon(self.inDriver.taskMonitor())
         self.outputMonitorTh = cocotb.start_soon(self.outputMonitor.taskMonitor())
@@ -247,19 +245,52 @@ class axiStreamTb(object):
         edge = RisingEdge(self.dut.clk)
         while not self.outputMonitor.last_out == 1:
             await edge
-        # print("$$ I am here")
         
         await self.initialTb()
 
     def resultCheck(self):
-        while len(self.inDriver.aimResult):
-            print(self.inDriver.aimResult.popleft(), end="\t")
-        print("\n/**********/")
-        
-        while len(self.outputMonitor.recvQ):
-            print(self.outputMonitor.recvQ.popleft(), end="\t")
-        print("\n/**********/")
-        # assert self.inDriver.aimResult == self.outputMonitor.recvQ
+        with open('./output/result.txt', 'w') as f:
+            lineNum = 0
+            goldenOutput = "Golden Output: \n"
+            goldenLen = len(self.inDriver.aimResult)
+            userOutput = "Your Output: \n"
+            userLen = len(self.outputMonitor.recvQ)
+            errorNum = 0
+            
+            line = "Golden: " + str(goldenLen) + "\nYour: " + str(goldenLen) + "\n\n"
+            f.write(line)
+            if (goldenLen != userLen):
+                f.write("Input Output Stream Length Mismatch !!")
+
+            else:
+                while len(self.inDriver.aimResult):
+                    g = self.inDriver.aimResult.popleft()
+                    goldenOutput += str(g)
+                    u = self.outputMonitor.recvQ.popleft()
+                    userOutput += str(u)
+                    if (g != u):
+                        errorNum += 1
+                        goldenOutput += "*"
+                        userOutput += "*"
+                    goldenOutput += "\t"
+                    userOutput += "\t"
+                    if (lineNum == 3):
+                        goldenOutput += "\n"
+                        userOutput += "\n"
+                        lineNum = 0
+                    else:
+                        lineNum += 1
+                
+                goldenOutput += "\n/**********/\n\n"
+                userOutput += "\n/**********/\n\n"
+                f.writelines(goldenOutput)
+                f.writelines(userOutput)
+                
+                if (errorNum != 0):
+                    line = str(errorNum) + " Data Mismatched !!"
+                    f.write(line)
+                else:
+                    f.write("All passed !!!")
         
     async def initialTb(self):
         edge = RisingEdge(self.dut.clk)
@@ -269,28 +300,25 @@ class axiStreamTb(object):
 def genRandomData():
     return random.randint(int("11111111", 16), int("ffffffff", 16))
 
+async def oneTest(tb, keepInsert, lastInsert, packNum):
+    headData = headerStream(int("12345678", 16), keepInsert)
+    tb.addTransaction(headData)
+    for i in range(packNum):
+        randData = genRandomData()
+        tb.addTransaction(dataStream(randData))
+    tb.addTransaction(lastStream(genRandomData(), lastInsert))
+    
+    await tb.waitAllDone()
+
 @cocotb.test()
 async def run_test(dut):
     tb = axiStreamTb(dut)
+    keepInsertArray = ["0001", "0011", "0111", "1111"]
+    lastInsertArray = ["1000", "1100", "1110", "1111"]
     await tb.start()
-    headData = headerStream(int("12345678", 16), "0011")
-    tb.addTransaction(headData)
-    for i in range(5):
-        randData = genRandomData()
-        tb.addTransaction(dataStream(randData))
-    tb.addTransaction(lastStream(genRandomData(), "1100"))
     
-    # await Timer(1000, "ns")
-    await tb.waitAllDone()
-    
-    headData = headerStream(int("12345678", 16), "0111")
-    tb.addTransaction(headData)
     for i in range(20):
-        randData = genRandomData()
-        tb.addTransaction(inputStream(data_in=genRandomData(), valid_in=random.randint(0, 1), ready_out=random.randint(0, 1), keep_in="1111"))
-    tb.addTransaction(lastStream(genRandomData(), "1100"))
-    
-    await tb.waitAllDone()
+        await oneTest(tb, keepInsertArray[random.randint(0, 3)], lastInsertArray[random.randint(0, 3)], random.randint(1, 10))
     
     tb.stop()
     tb.resultCheck()

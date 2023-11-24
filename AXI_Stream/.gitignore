@@ -2,3 +2,5 @@ __pycache__/
 sim_build/
 *.vcd
 *.xml
+*.gtkw
+*.txt
