@@ -229,7 +229,7 @@ class axiStreamTb(object):
         self.inDriver = inputDriver(dut.clk, dut.valid_in, dut.data_in, dut.keep_in, dut.last_in, dut.ready_out, dut.valid_insert, dut.header_insert, dut.keep_insert, dut.ready_in, dut.ready_insert)
         self.outputMonitor = outputMonitor(dut.clk, dut.valid_out, dut.ready_out, dut.data_out, dut.keep_out, dut.last_out)
         self.clockCtrl = clockDomain(self.dut.clk, 10, "ns", self.dut.rst_n, False)
-        
+    
     async def start(self):
         self.inDriverTh = cocotb.start_soon(self.inDriver.taskMonitor())
         self.outputMonitorTh = cocotb.start_soon(self.outputMonitor.taskMonitor())
@@ -252,14 +252,66 @@ class axiStreamTb(object):
         await self.initialTb()
 
     def resultCheck(self):
-        while len(self.inDriver.aimResult):
-            print(self.inDriver.aimResult.popleft(), end="\t")
-        print("\n/**********/")
+        with open('result.txt', 'w') as f:
+            lineNum = 0
+            goldenOutput = "Golden Output: \n"
+            goldenLen = len(self.inDriver.aimResult)
+            userOutput = "Your Output: \n"
+            userLen = len(self.outputMonitor.recvQ)
+            errorNum = 0
+            
+            if (goldenLen != userLen):
+                f.write("Input Output Stream Length Mismatch !!")
+            else:
+                while len(self.inDriver.aimResult):
+                    g = self.inDriver.aimResult.popleft()
+                    goldenOutput += str(g)
+                    u = self.outputMonitor.recvQ.popleft()
+                    print(g, u)
+                    userOutput += str(u)
+                    if (g != u):
+                        errorNum += 1
+                        goldenOutput += "*"
+                        userOutput += "*"
+                    goldenOutput += "\t"
+                    userOutput += "\t"
+                    if (lineNum == 3):
+                        goldenOutput += "\n"
+                        userOutput += "\n"
+                        lineNum = 0
+                    else:
+                        lineNum += 1
+                
+                goldenOutput += "\n/**********/\n\n"
+                userOutput += "\n/**********/\n\n"
+                f.writelines(goldenOutput)
+                f.writelines(userOutput)
+                
+                if (errorNum != 0):
+                    line = str(errorNum) + " Data Mismatched !!"
+                    f.write(line)
+
+            # while len(self.inDriver.aimResult):
+            #     f.write(self.inDriver.aimResult.popleft())
+            #     f.write("\t")
+            #     if (lineNum == 4):
+            #         f.write("\n")
+            #         lineNum = 0
+            #     else:
+            #         lineNum += 1
+            # f.write("\n/**********/\n\n")
+            
+            # lineNum = 0
+            # while len(self.outputMonitor.recvQ):
+            #     f.write(self.outputMonitor.recvQ.popleft())
+            #     f.write("\t")
+            #     if (lineNum == 4):
+            #         f.write("\n")
+            #         lineNum = 0
+            #     else:
+            #         lineNum += 1
+            # f.write("\n/**********/\n\n")
         
-        while len(self.outputMonitor.recvQ):
-            print(self.outputMonitor.recvQ.popleft(), end="\t")
-        print("\n/**********/")
-        # assert self.inDriver.aimResult == self.outputMonitor.recvQ
         
     async def initialTb(self):
         edge = RisingEdge(self.dut.clk)
