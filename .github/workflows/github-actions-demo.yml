@@ -8,12 +8,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      echo: "The ${{ github.repository }} repository has been cloned to the runner."
+      run: echo "The ${{ github.repository }} repository has been cloned to the runner."
     
     - name: Login to Docker Hub
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      echo: "Accessing Docker Hub......"
+      run: echo "Accessing Docker Hub......"
 
     - name: Build Docker image
       run: docker build --progress=plain -t cocotb:test .
-      echo: "Running Dockerfile"
+      run: echo "Running Dockerfile"
