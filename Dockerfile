@@ -26,7 +26,7 @@ RUN apt-get install -y libgoogle-perftools-dev numactl perl-doc
 RUN apt-get install -y libfl2
 RUN apt-get install -y libfl-dev
 WORKDIR /usr/local/verilator
-RUN git clone https://github.com/verilator/verilator --shadow
+RUN git clone https://github.com/verilator/verilator
 
 # wget 找到release的页面找稳定版本
 WORKDIR /usr/local/verilator/verilator
