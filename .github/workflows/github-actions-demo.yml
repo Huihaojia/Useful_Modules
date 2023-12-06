@@ -20,6 +20,8 @@ jobs:
 
     - name: Run cocotb Docker image
       run: docker run -v $(pwd)/AXI_Stream:/home/project sherlocat/cocotb make
+    - run: echo "$(pwd)"
+    - run: ls
     
     - name: Archive production artifacts
       uses: actions/upload-artifact@v3
