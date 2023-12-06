@@ -249,7 +249,7 @@ class axiStreamTb(object):
         await self.initialTb()
 
     def resultCheck(self):
-        with open('result.txt', 'w') as f:
+        with open('./output/result.txt', 'w') as f:
             lineNum = 0
             goldenOutput = "Golden Output: \n"
             goldenLen = len(self.inDriver.aimResult)
