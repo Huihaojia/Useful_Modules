@@ -151,7 +151,6 @@ class inputDriver(object):
             data_in = hex_div(hex(transaction.data_in)[2:], 2)
             keep_in = hex_div(transaction.keep_in, 1)
             
-            # print("$$", data_in)
             for i in range(len(keep_in)):
                 if(keep_in[i] == "1"):
                     self.aimResult.append(data_in[i])
@@ -211,10 +210,9 @@ class outputMonitor(object):
                 self.taskCounter += 1
                 cocotb.log.info("Get a transaction in Output Monitor")
                 
-                data_out = hex_div(hex(self.data_out.value)[2:].ljust(8, '0'), 2)
+                data_out = hex_div(hex(self.data_out.value)[2:].rjust(8, '0'), 2)
                 keep_out = hex_div(bin(self.keep_out.value)[2:], 1)
                 
-                # print("##", keep_out)
                 for i in range(len(keep_out)):
                     if(keep_out[i] == "1"):
                         self.recvQ.append(data_out[i])
@@ -247,7 +245,6 @@ class axiStreamTb(object):
         edge = RisingEdge(self.dut.clk)
         while not self.outputMonitor.last_out == 1:
             await edge
-        # print("$$ I am here")
         
         await self.initialTb()
 
@@ -267,7 +264,6 @@ class axiStreamTb(object):
                     g = self.inDriver.aimResult.popleft()
                     goldenOutput += str(g)
                     u = self.outputMonitor.recvQ.popleft()
-                    print(g, u)
                     userOutput += str(u)
                     if (g != u):
                         errorNum += 1

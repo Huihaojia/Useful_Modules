@@ -1,41 +1,38 @@
 Golden Output: 
-56	78	c0	48	
-b5	87	73	b8	
-7d	eb	4a	a0	
-03*	e0*	ca*	8a*	
-60	e0	40	e9	
-b0	f1	8a	84	
-34	56	78	e8	
-f3	03	b6	1f	
-4c	d1	47	2b	
-98	4e	e7	30	
-00*	c2*	da*	8c*	
-26	c8	24	c6	
-f3	6a	9f	14	
-b3	ec	e9	f6	
-36	08	d9	ee	
-4f	aa	c3	f1	
-50	
+56	78	94	6c	
+82	8d	db	08	
+04	2c	17	bf	
+61	ea	cc	3a	
+c5	7f	bf	e9	
+de	93	eb	91	
+34	56	78	42	
+47	33	60	1e	
+54	02	a5	34	
+c0	7c	78	bf	
+3c	66	f2	ec	
+3b	32	21	2a	
+68	1b	4b	61	
+8c	bf	34	fe	
+e2	48	ae	36	
+df	
 /**********/
 
 Your Output: 
-56	78	c0	48	
-b5	87	73	b8	
-7d	eb	4a	a0	
-3e*	0c*	a8*	a0*	
-60	e0	40	e9	
-b0	f1	8a	84	
-34	56	78	e8	
-f3	03	b6	1f	
-4c	d1	47	2b	
-98	4e	e7	30	
-c2*	da*	8c*	00*	
-26	c8	24	c6	
-f3	6a	9f	14	
-b3	ec	e9	f6	
-36	08	d9	ee	
-4f	aa	c3	f1	
-50	
+56	78	94	6c	
+82	8d	db	08	
+04	2c	17	bf	
+61	ea	cc	3a	
+c5	7f	bf	e9	
+de	93	eb	91	
+34	56	78	42	
+47	33	60	1e	
+54	02	a5	34	
+c0	7c	78	bf	
+3c	66	f2	ec	
+3b	32	21	2a	
+68	1b	4b	61	
+8c	bf	34	fe	
+e2	48	ae	36	
+df	
 /**********/
 
-8 Data Mismatched !!
