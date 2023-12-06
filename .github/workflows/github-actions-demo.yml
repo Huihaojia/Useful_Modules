@@ -19,7 +19,7 @@ jobs:
     - run: echo "Pulling Dockerfile"
 
     - name: Run cocotb Docker image
-      run: docker run -v $(pwd)/AXI_Stream:/home/project sherlocat/cocotb bash -c "cd ./AXI_Stream && make"
+      run: docker run -v $(pwd)/AXI_Stream:/home/project sherlocat/cocotb bash -c "cd /home/project/AXI_Stream && make"
     - run: cd ./AXI_Stream/output
     - run: echo "Done!!!"
     
