@@ -286,28 +286,8 @@ class axiStreamTb(object):
                 if (errorNum != 0):
                     line = str(errorNum) + " Data Mismatched !!"
                     f.write(line)
-
-            # while len(self.inDriver.aimResult):
-            #     f.write(self.inDriver.aimResult.popleft())
-            #     f.write("\t")
-            #     if (lineNum == 4):
-            #         f.write("\n")
-            #         lineNum = 0
-            #     else:
-            #         lineNum += 1
-            # f.write("\n/**********/\n\n")
-            
-            # lineNum = 0
-            # while len(self.outputMonitor.recvQ):
-            #     f.write(self.outputMonitor.recvQ.popleft())
-            #     f.write("\t")
-            #     if (lineNum == 4):
-            #         f.write("\n")
-            #         lineNum = 0
-            #     else:
-            #         lineNum += 1
-            # f.write("\n/**********/\n\n")
-        
+                else:
+                    f.write("All passed !!!")
         
     async def initialTb(self):
         edge = RisingEdge(self.dut.clk)
@@ -328,7 +308,6 @@ async def run_test(dut):
         tb.addTransaction(dataStream(randData))
     tb.addTransaction(lastStream(genRandomData(), "1100"))
     
-    # await Timer(1000, "ns")
     await tb.waitAllDone()
     
     headData = headerStream(int("12345678", 16), "0111")
